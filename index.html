@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>VLESS Converter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+    font-family:Arial;
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+textarea{
+    width:90%;
+    max-width:800px;
+    height:80px;
+    margin:10px;
+    padding:10px;
+}
+button{
+    padding:10px 20px;
+    margin:10px;
+    border:none;
+    border-radius:6px;
+    background:#22c55e;
+    color:white;
+    cursor:pointer;
+}
+.result{
+    background:#1e293b;
+    margin:10px auto;
+    padding:10px;
+    max-width:800px;
+    border-radius:8px;
+    word-break:break-all;
+}
+</style>
+</head>
+<body>
+
+<h2>VLESS 6‑Node Converter</h2>
+<p>Paste your VLESS link</p>
+
+<textarea id="input" placeholder="Paste vless:// here"></textarea><br>
+<button onclick="convert()">Convert</button>
+<button onclick="copyAll()">Copy All</button>
+
+<div id="output"></div>
+
+<script>
+const domains = [
+"arielag.aariel.website",
+"about.com",
+"vimeo.com",
+"mediafire.com",
+"ehow.com",
+"neobux.com"
+];
+
+function convert(){
+    let link = document.getElementById("input").value.trim();
+    if(!link.startsWith("vless://")){
+        alert("Invalid VLESS link");
+        return;
+    }
+
+    let parts = link.split("@");
+    let uuid = parts[0].replace("vless://","");
+    let rest = parts[1];
+
+    let name = "";
+    if(link.includes("#")){
+        name = link.split("#")[1];
+        rest = rest.split("#")[0];
+    }
+
+    let pathMatch = link.match(/path=([^&]+)/);
+    let path = pathMatch ? pathMatch[1] : "%2F";
+
+    let outputHTML = "";
+    window.allConfigs = "";
+
+    domains.forEach(domain => {
+        let newLink = `vless://${uuid}@${domain}:443?type=ws&encryption=none&path=${path}&host=arielag.aariel.website&security=tls&sni=arielag.aariel.website#${name}`;
+        outputHTML += `<div class="result">${newLink}</div>`;
+        window.allConfigs += newLink + "\\n";
+    });
+
+    document.getElementById("output").innerHTML = outputHTML;
+}
+
+function copyAll(){
+    if(!window.allConfigs){
+        alert("Convert first");
+        return;
+    }
+    navigator.clipboard.writeText(window.allConfigs);
+    alert("All configs copied");
+}
+</script>
+
+</body>
+</html>
