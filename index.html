@@ -40,7 +40,7 @@ button{
 </head>
 <body>
 
-<h2>Ariel VPN Node Converter</h2>
+<h2>Ariel VPN tt2 Node Converter</h2>
 <p>Paste your VLESS link</p>
 
 <textarea id="input" placeholder="Paste vless:// here"></textarea><br>
@@ -84,7 +84,7 @@ function convert(){
     window.allConfigs = "";
 
     domains.forEach(domain => {
-        let newLink = `vless://${uuid}@${domain}:443?type=ws&encryption=none&path=${path}&host=arielag.aariel.website&security=tls&sni=arielag.aariel.website#${name}`;
+        let newLink = `vless://${uuid}@${domain}:443?type=ws&encryption=none&path=${path}&host=bbdj22.joybb.me&security=tls&sni=bbdj22.joybb.me#${name}`;
         outputHTML += `<div class="result">${newLink}</div>`;
         window.allConfigs += newLink + "\r\n";
     });
